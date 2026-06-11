@@ -1,0 +1,34 @@
+services:
+  app:
+    image: pill-taker
+    container_name: pill-taker
+    build:
+      context: .
+      dockerfile: dockerfile
+    env_file: .env.development
+    volumes:
+      - ./:/app
+    ports:
+      - 8080:8080
+    stdin_open: true
+    tty: true
+
+  postgres:
+    image: postgres:15
+    container_name: pill-taker-postgres
+    environment:
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_DB: $DB_NAME
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:
+    name: pill-taker-pgdata
+
+networks:
+  default:
+    name: pill-taker

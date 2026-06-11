@@ -1,0 +1,39 @@
+{
+  "name": "pill-taker-backend",
+  "version": "0.0.1",
+  "license": "UNLICENSED",
+  "packageManager": "npm@11.16.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "npm run docker:up && npm run docker:attach",
+    "docker:attach": "docker attach pill-taker",
+    "docker:bash": "docker exec -it pill-taker bash",
+    "docker:up": "docker compose -p pill-taker --env-file .env.development up -d --build --force-recreate",
+    "build": "tsup src/index.ts --format esm"
+  },
+  "dependencies": {
+    "axios": "^1.10.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.2.0",
+    "pg": "^8.16.3",
+    "sequelize": "^6.37.8",
+    "uuid": "11.1.1"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.9",
+    "@types/cors": "^2.8.19",
+    "@types/node": "^24.0.10",
+    "eslint": "^9.30.1",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  },
+  "overrides": {
+    "uuid": "11.1.1"
+  }
+}

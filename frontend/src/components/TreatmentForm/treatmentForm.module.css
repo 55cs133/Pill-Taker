@@ -1,0 +1,57 @@
+form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background-color: #64748b;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid hsl(180, 40%, 50%);
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+input::placeholder {
+  color: #93c5fd;
+}
+
+.medicineInfo {
+  border: 1px solid hsl(180, 40%, 20%);
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  background-color: hsl(180, 20%, 40%);
+}
+
+.medicineInfo h4 {
+  margin-top: 1000;
+}
+
+button {
+  padding: 8px 16px;
+  font-size: 14px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.addButton {
+  background-color: #52525b;
+  margin-bottom: 10px;
+}
+
+.submitButton {
+  background-color: #65a30d;
+}

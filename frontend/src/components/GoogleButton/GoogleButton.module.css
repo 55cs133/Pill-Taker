@@ -1,0 +1,14 @@
+.button {
+  display: flex;
+  @apply gap-3;
+  @apply items-center;
+  @apply bg-black;
+  @apply text-white;
+  @apply justify-center;
+  @apply dark:bg-white;
+  @apply dark:text-black;
+}
+
+.logo {
+  height: 20px;
+}
