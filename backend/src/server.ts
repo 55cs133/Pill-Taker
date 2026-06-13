@@ -14,6 +14,7 @@ import treatmentRouter from '@/routes/treatment.js';
 import userInfo from '@/routes/user-info.js';
 import flashRouter from '@/routes/flash.js';
 import telegramRouter from '@/routes/telegram.js';
+import telegramWebhookRouter from '@/routes/telegram-webhook.js';
 
 export async function createServer() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -36,12 +37,13 @@ export async function createServer() {
 
   // Public routes (no auth)
   app.use('/flash', flashRouter);
-  app.use('/telegram', telegramRouter);
+  app.use('/telegram/webhook', telegramWebhookRouter);
   app.use('/login', loginRouter);
 
   // Protected routes
   app.use(verifyAccess());
   app.use('/treatments', treatmentRouter);
+  app.use('/telegram', telegramRouter);
   app.use('/user-info', userInfo);
   app.use(handleErrors);
 

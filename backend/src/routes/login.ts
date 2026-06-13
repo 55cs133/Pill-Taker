@@ -47,7 +47,7 @@ router.post('/register', async (request, response) => {
   }
 });
 
-router.post('/login', async (request, response) => {
+router.post('/', async (request, response) => {
   try {
     const { email, password } = request.body;
     if (!email || !password) {
