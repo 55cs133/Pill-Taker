@@ -14,7 +14,7 @@ export function verifyAccess() {
       const sessionToken = req.cookies.session_token;
       const decodedToken = jwt.verify(sessionToken, process.env.JWT_SECRET);
       const { userId } = decodedToken as { userId: string };
-      const user = await User.findOne({ where: { googleID: userId } });
+      const user = await User.findByPk(userId);
       if (user) {
         req.user = user;
         return next();

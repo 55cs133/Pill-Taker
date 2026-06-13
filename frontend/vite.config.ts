@@ -22,9 +22,6 @@ export default defineConfig(({ mode }) => {
       },
       devSourcemap: true,
     },
-    define: {
-      'import.meta.env.GOOGLE_CLIENT_ID': JSON.stringify(env.GOOGLE_CLIENT_ID),
-    },
     server: {
       port: env.PORT ? parseInt(env.PORT, 10) : 3000,
       proxy: {

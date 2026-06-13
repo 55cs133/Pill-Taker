@@ -28,8 +28,9 @@ export async function createServer() {
 
   app.use(express.json());
   app.use(cookieParser());
+  const isProduction = process.env.NODE_ENV === 'production';
   app.use(cors({
-    origin: `http://localhost:${process.env.FRONT}`,
+    origin: isProduction ? process.env.PUBLIC_URL : true,
     credentials: true,
   }));
 

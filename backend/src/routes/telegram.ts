@@ -60,7 +60,7 @@ router.post('/webhook', async (req, res) => {
 
       const user = linkToken.getDataValue('User');
       if (user) {
-        user.telegramChatId = chatId;
+        user.setDataValue('telegramChatId', chatId);
         await user.save();
         await linkToken.destroy();
       }

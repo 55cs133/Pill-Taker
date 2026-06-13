@@ -2,9 +2,6 @@ declare namespace NodeJS {
   interface ProcessEnv {
     BACK: number;
     FRONT: number;
-    GOOGLE_CLIENT_ID: string;
-    GOOGLE_CLIENT_SECRET: string;
-    REDIRECT_URI: string;
     JWT_SECRET: string;
     DB_HOST: string;
     DB_USER: string;
@@ -20,5 +17,6 @@ declare namespace NodeJS {
     SMTP_USER: string;
     SMTP_PASS: string;
     SMTP_FROM: string;
+    NODE_ENV: string;
   }
 }
