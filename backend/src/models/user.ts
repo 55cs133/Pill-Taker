@@ -20,7 +20,10 @@ export const User = Sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  telegramChatId: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 }, {
-  timestamps: false,
-},
-);
+  timestamps: true,
+});

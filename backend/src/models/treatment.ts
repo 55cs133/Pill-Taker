@@ -17,8 +17,9 @@ export const Treatment = Sequelize.define('Treatment', {
   },
   slug: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
+    unique: true,
   },
 }, {
-  timestamps: false,
+  timestamps: true,
 });

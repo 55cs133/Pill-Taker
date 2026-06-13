@@ -8,19 +8,19 @@ import { useState } from 'react';
 
 import { GoogleButton } from '@/components/GoogleButton';
 import { TreatmentForm } from '@/components/TreatmentForm';
+import { TreatmentList } from '@/components/TreatmentList';
+import { TelegramLink } from '@/components/TelegramLink';
 import { WordFlipped } from '@/components/WordFlipped';
 
-const backendPort = import.meta.env.API_PORT;
-
 function App() {
-  const [status, setStatus] = useState(null);
-  const [user, setUser] = useState(null);
-  const [mail, setMail] = useState(null);
-  const [picture, setPicture] = useState(null);
+  const [status, setStatus] = useState<boolean | null>(null);
+  const [user, setUser] = useState<string | null>(null);
+  const [mail, setMail] = useState<string | null>(null);
+  const [picture, setPicture] = useState<string | null>(null);
 
   const getUserInfo = async () => {
     try {
-      const response = await axios.get(`http://localhost:${backendPort}`,
+      const response = await axios.get('/user-info',
         { withCredentials: true },
       );
       setStatus(true);
@@ -33,7 +33,9 @@ function App() {
     }
   };
 
-  getUserInfo();
+  React.useEffect(() => {
+    getUserInfo();
+  }, []);
 
   const loginWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -42,7 +44,7 @@ function App() {
         console.log(access_token);
 
         try {
-          const response = await axios.post(`http://localhost:${backendPort}/login`,
+          const response = await axios.post('/login',
             { access_token },
             { withCredentials: true },
           );
@@ -59,29 +61,42 @@ function App() {
   });
 
   return (
-    <div className="flex flex-col items-center space-y-4">
+    <div className="flex flex-col items-center space-y-4" style={{ padding: '1rem', minHeight: '100vh' }}>
       <div className="w-1/2">
         <WordFlipped />
       </div>
-      <GoogleButton onClick={() => loginWithGoogle()} />
+
       {status === null && (
-        <div>
+        <div className="flex flex-col items-center space-y-2">
           <GoogleButton onClick={() => loginWithGoogle()} />
           <Stack direction="row" spacing={2}>
             <Avatar sx={{ bgcolor: deepOrange[500] }}></Avatar>
           </Stack>
         </div>
       )}
-      {status && (
-        <Stack direction="row">
-          <Avatar alt={user} src={picture}></Avatar>
-          <Stack direction="column" spacing={1}>
-            <p>{user}</p>
-            <p>{mail}</p>
-          </Stack>
-        </Stack>
+
+      {status === false && (
+        <div className="flex flex-col items-center space-y-2">
+          <p>Please log in to continue</p>
+          <GoogleButton onClick={() => loginWithGoogle()} />
+        </div>
       )}
-      <TreatmentForm />
+
+      {status && (
+        <>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Avatar alt={user || ''} src={picture || ''}></Avatar>
+            <Stack direction="column" spacing={0.5}>
+              <p style={{ fontWeight: 'bold', margin: 0 }}>{user}</p>
+              <p style={{ margin: 0, fontSize: 14, color: '#666' }}>{mail}</p>
+            </Stack>
+          </Stack>
+
+          <TreatmentList />
+          <TelegramLink />
+          <TreatmentForm />
+        </>
+      )}
     </div>
   );
 }

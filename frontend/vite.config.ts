@@ -6,6 +6,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
+  const backendPort = env.VITE_BACKEND_PORT || '8080';
 
   return {
     plugins: [
@@ -22,11 +23,17 @@ export default defineConfig(({ mode }) => {
       devSourcemap: true,
     },
     define: {
-      'import.meta.env.API_PORT': JSON.stringify(env.API_PORT),
       'import.meta.env.GOOGLE_CLIENT_ID': JSON.stringify(env.GOOGLE_CLIENT_ID),
     },
     server: {
-      port: env.PORT,
+      port: env.PORT ? parseInt(env.PORT, 10) : 3000,
+      proxy: {
+        '/login': `http://localhost:${backendPort}`,
+        '/treatments': `http://localhost:${backendPort}`,
+        '/user-info': `http://localhost:${backendPort}`,
+        '/flash': `http://localhost:${backendPort}`,
+        '/telegram': `http://localhost:${backendPort}`,
+      },
     },
   };
 });

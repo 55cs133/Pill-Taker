@@ -1,6 +1,28 @@
 
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
 # Beads / Dolt files (added by bd init)
 .dolt/
 *.db
 .beads-credential-key
 .beads/proxieddb/
+
+# Gas Town (added by gt)
+.runtime/
+.claude/
+.opencode/
+.logs/
+__pycache__/
+state.json
+CLAUDE.md
+CLAUDE.local.md
+GEMINI.md

@@ -1,7 +1,7 @@
 services:
-  app:
-    image: pill-taker
-    container_name: pill-taker
+  backend:
+    image: pill-taker-backend
+    container_name: pill-taker-backend
     build:
       context: .
       dockerfile: dockerfile
@@ -12,6 +12,19 @@ services:
       - 8080:8080
     stdin_open: true
     tty: true
+    depends_on:
+      - postgres
+
+  frontend:
+    image: pill-taker-frontend
+    container_name: pill-taker-frontend
+    build:
+      context: ../frontend
+      dockerfile: dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - backend
 
   postgres:
     image: postgres:15

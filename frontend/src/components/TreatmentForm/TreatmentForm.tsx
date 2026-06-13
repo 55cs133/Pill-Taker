@@ -4,8 +4,6 @@ import { useForm, useFieldArray } from 'react-hook-form';
 
 import styles from '@/components/TreatmentForm/treatmentForm.module.css';
 
-const backendPort = import.meta.env.VITE_BACKEND_PORT;
-
 export function TreatmentForm() {
   const {
     control,
@@ -27,9 +25,13 @@ export function TreatmentForm() {
     name: 'medicines',
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: {
+    treatmentName: string;
+    interval: string;
+    medicines: Array<{ name: string; dosage: string; quantity: string }>;
+  }) => {
     try {
-      const response = await axios.post(`http://localhost:${backendPort}/treatments/`,
+      const response = await axios.post('/treatments',
         data,
         { withCredentials: true },
       );

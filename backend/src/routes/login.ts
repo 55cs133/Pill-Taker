@@ -35,9 +35,9 @@ router.post('/', async (request, response) => {
     });
 
     if (!created) {
-      user.email = email;
-      user.name = name;
-      user.picture = picture;
+      user.setDataValue('email', email);
+      user.setDataValue('name', name);
+      user.setDataValue('picture', picture);
       await user.save();
     }
 
