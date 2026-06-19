@@ -1,0 +1,16 @@
+{
+  "name": "pill-taker",
+  "version": "0.0.1",
+  "description": "Medication tracking app with QR codes",
+  "private": true,
+  "scripts": {
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:backend": "cd backend && npm test",
+    "test:frontend": "cd frontend && npm test",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
+  }
+}
