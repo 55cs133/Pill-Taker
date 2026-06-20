@@ -47,14 +47,11 @@ This document catalogs all features from the legacy Pill-Taker application (loca
 - [ ] Treatment list with expandable QR code display and dose history
 - [ ] Treatment creation form with dynamic medicine fields (add multiple medicines)
 - [ ] Telegram link component (generate link, show deep-link URL)
-- [ ] Animated word flipper (branding hero: "flash / take / track / heal")
 
 ## Infrastructure & Deployment
 
+- [ ] PostgreSQL database
 - [ ] Docker Compose setup (backend, frontend, PostgreSQL)
-- [ ] Nginx reverse proxy for frontend static serving
-- [ ] PostgreSQL database (via Sequelize ORM)
-- [ ] Separate backend (Express) and frontend (Vite + React) services
 
 ## Testing
 
