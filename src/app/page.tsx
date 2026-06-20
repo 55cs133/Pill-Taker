@@ -1,26 +1,32 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-type HealthStatus = {
-  status: "ok" | "error";
-  message: string;
-  timestamp?: string;
+type User = {
+  name: string;
+  email: string;
 };
 
 export default function Home() {
-  const [health, setHealth] = useState<HealthStatus | null>(null);
+  const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/health")
-      .then((res) => res.json())
-      .then((data: HealthStatus) => setHealth(data))
-      .catch(() =>
-        setHealth({ status: "error", message: "Failed to reach health endpoint" })
-      )
+    fetch("/api/auth/me")
+      .then((res) => (res.ok ? res.json() : { user: null }))
+      .then((data) => setUser(data.user))
+      .catch(() => setUser(null))
       .finally(() => setLoading(false));
   }, []);
+
+  async function handleLogout() {
+    await fetch("/api/auth/logout", { method: "POST" });
+    setUser(null);
+    router.refresh();
+  }
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -29,32 +35,36 @@ export default function Home() {
           Pill Taker
         </h1>
 
-        <div className="w-full max-w-md rounded-lg border border-zinc-200 p-6 dark:border-zinc-800">
-          <h2 className="mb-4 text-lg font-medium text-zinc-900 dark:text-zinc-100">
-            Database Status
-          </h2>
-
-          {loading ? (
-            <p className="text-sm text-zinc-500">Checking connection&hellip;</p>
-          ) : health?.status === "ok" ? (
-            <div className="flex items-center gap-3">
-              <span className="inline-block h-3 w-3 rounded-full bg-green-500" />
-              <span className="text-sm text-zinc-700 dark:text-zinc-300">
-                Connected
-              </span>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-3">
-                <span className="inline-block h-3 w-3 rounded-full bg-red-500" />
-                <span className="text-sm text-zinc-700 dark:text-zinc-300">
-                  Disconnected
-                </span>
-              </div>
-              <p className="text-xs text-zinc-500">{health?.message}</p>
-            </div>
-          )}
-        </div>
+        {loading ? (
+          <p className="text-sm text-zinc-500">Loading...</p>
+        ) : user ? (
+          <div className="w-full max-w-md rounded-lg border border-zinc-200 p-6 dark:border-zinc-800">
+            <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">
+              Logged in as <span className="font-medium">{user.name}</span> ({user.email})
+            </p>
+            <button
+              onClick={handleLogout}
+              className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            >
+              Log out
+            </button>
+          </div>
+        ) : (
+          <div className="flex gap-4">
+            <Link
+              href="/login"
+              className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            >
+              Log in
+            </Link>
+            <Link
+              href="/register"
+              className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            >
+              Register
+            </Link>
+          </div>
+        )}
       </main>
     </div>
   );
