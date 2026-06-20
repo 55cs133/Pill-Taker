@@ -4,50 +4,39 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 
-type User = {
-  name: string;
-  email: string;
-};
-
 const AUTH_PATHS = ["/login", "/register"];
 
 export function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [name, setName] = useState<string | null>(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     async function load() {
       try {
         const res = await fetch("/api/auth/me");
-        if (!cancelled) {
-          if (res.ok) {
-            const data = await res.json();
-            setUser(data.user);
-          } else {
-            setUser(null);
-          }
+        if (!cancelled && res.ok) {
+          const data = await res.json();
+          setName(data.user?.name ?? null);
         }
       } catch {
-        if (!cancelled) setUser(null);
+        // ignore
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) setReady(true);
       }
     }
     load();
     return () => { cancelled = true; };
-  }, []);
+  }, [pathname]);
 
   async function handleLogout() {
     await fetch("/api/auth/logout", { method: "POST" });
-    setUser(null);
     router.push("/login");
   }
 
-  if (loading) return null;
-  if (AUTH_PATHS.includes(pathname)) return null;
+  if (!ready || AUTH_PATHS.includes(pathname) || !name) return null;
 
   return (
     <nav className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
@@ -60,34 +49,15 @@ export function Navbar() {
         </Link>
 
         <div className="flex items-center gap-4">
-          {user ? (
-            <>
-              <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                {user.name}
-              </span>
-              <button
-                onClick={handleLogout}
-                className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
-              >
-                Log out
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                href="/login"
-                className="text-sm font-medium text-zinc-700 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100"
-              >
-                Log in
-              </Link>
-              <Link
-                href="/register"
-                className="rounded-md bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-              >
-                Register
-              </Link>
-            </>
-          )}
+          <span className="text-sm text-zinc-600 dark:text-zinc-400">
+            {name}
+          </span>
+          <button
+            onClick={handleLogout}
+            className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
+          >
+            Log out
+          </button>
         </div>
       </div>
     </nav>
