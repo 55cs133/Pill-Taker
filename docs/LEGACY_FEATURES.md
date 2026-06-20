@@ -33,9 +33,9 @@ This document catalogs all features from the legacy Pill-Taker application (loca
 - [ ] Webhook handler for Telegram `/start` command to link a user's chat ID
 - [ ] Send Telegram notification on dose confirmation
 
-## Email Notifications
+## Email Reminders
 
-- [ ] SMTP-based email notifications on dose confirmation
+- [ ] SMTP-based email reminders for upcoming doses
 
 ## User Profile
 
