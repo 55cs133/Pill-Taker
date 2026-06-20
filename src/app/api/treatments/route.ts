@@ -4,11 +4,8 @@ import { eq, desc } from "drizzle-orm";
 import crypto from "node:crypto";
 
 import { getDatabase } from "@/lib/db";
+import { getUserId } from "@/lib/auth";
 import { treatments, type Medicine } from "@/lib/schema/treatments";
-
-function getUserId(request: NextRequest): string | null {
-  return request.headers.get("x-user-id");
-}
 
 export async function POST(request: NextRequest) {
   const userId = getUserId(request);

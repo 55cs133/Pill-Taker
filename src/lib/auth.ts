@@ -66,3 +66,7 @@ export async function getSessionFromCookies(): Promise<{
 }
 
 export const COOKIE_NAME_EXPORT = COOKIE_NAME;
+
+export function getUserId(request: { headers: { get(name: string): string | null } }): string | null {
+  return request.headers.get("x-user-id");
+}
