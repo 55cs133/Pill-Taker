@@ -30,6 +30,7 @@ export default function TreatmentsPage() {
   ]);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -99,6 +100,23 @@ export default function TreatmentsPage() {
       setError("Something went wrong");
     } finally {
       setSubmitting(false);
+    }
+  }
+
+  async function handleDelete(id: string) {
+    setDeleting(id);
+    try {
+      const res = await fetch(`/api/treatments/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        setTreatments((prev) => prev.filter((t) => t.id !== id));
+      } else {
+        const data = await res.json();
+        setError(data.error || "Failed to delete treatment");
+      }
+    } catch {
+      setError("Something went wrong");
+    } finally {
+      setDeleting(null);
     }
   }
 
@@ -262,9 +280,18 @@ export default function TreatmentsPage() {
                   <h3 className="font-medium text-zinc-900 dark:text-zinc-100">
                     {treatment.name}
                   </h3>
-                  <span className="text-xs text-zinc-500">
-                    Every {treatment.interval}h
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs text-zinc-500">
+                      Every {treatment.interval}h
+                    </span>
+                    <button
+                      onClick={() => handleDelete(treatment.id)}
+                      disabled={deleting === treatment.id}
+                      className="text-xs text-zinc-400 hover:text-red-500 disabled:opacity-50"
+                    >
+                      {deleting === treatment.id ? "Deleting..." : "Delete"}
+                    </button>
+                  </div>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {treatment.medicine.map((med, i) => (
