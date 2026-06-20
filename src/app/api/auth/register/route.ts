@@ -50,9 +50,10 @@ export async function POST(request: Request) {
     response.cookies.set(cookie);
     return response;
   } catch (error) {
-    console.error("Registration error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+    console.error("Registration error:", message, error);
     return NextResponse.json(
-      { error: "Registration failed" },
+      { error: "Registration failed", detail: message },
       { status: 500 }
     );
   }
