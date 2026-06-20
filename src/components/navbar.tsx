@@ -2,15 +2,18 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 type User = {
   name: string;
   email: string;
 };
 
+const AUTH_PATHS = ["/login", "/register"];
+
 export function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -44,6 +47,7 @@ export function Navbar() {
   }
 
   if (loading) return null;
+  if (AUTH_PATHS.includes(pathname)) return null;
 
   return (
     <nav className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">

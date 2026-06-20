@@ -132,13 +132,8 @@ export default function Home() {
   }
 
   if (!authenticated) {
-    return (
-      <div className="flex flex-1 flex-col items-center justify-center bg-zinc-50 dark:bg-black">
-        <p className="mb-4 text-sm text-zinc-600 dark:text-zinc-400">
-          Log in to manage your treatments.
-        </p>
-      </div>
-    );
+    router.push("/login");
+    return null;
   }
 
   return (
